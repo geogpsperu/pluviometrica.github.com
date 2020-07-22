@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 423px;
+            height: 556px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Departamentos_1.js"></script>
+        <script src="data/CuencasHidrogrficas_2.js"></script>
+        <script src="data/Hidromtricas_3.js"></script>
+        <script src="data/Climticas_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-18.80831555675,-82.03547930586733],[0.4190470067500023,-67.42407201483213]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_GoogleMaps_0');
+        map.getPane('pane_GoogleMaps_0').style.zIndex = 400;
+        var layer_GoogleMaps_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_GoogleMaps_0;
+        map.addLayer(layer_GoogleMaps_0);
+        function pop_Departamentos_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Departamento:</th>\
+                        <td>' + (feature.properties['NOMBDEP'] !== null ? autolinker.link(feature.properties['NOMBDEP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Departamentos_1_0() {
+            return {
+                pane: 'pane_Departamentos_1',
+                opacity: 1,
+                color: 'rgba(130,130,130,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(231,113,72,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Departamentos_1');
+        map.getPane('pane_Departamentos_1').style.zIndex = 401;
+        map.getPane('pane_Departamentos_1').style['mix-blend-mode'] = 'normal';
+        var layer_Departamentos_1 = new L.geoJson(json_Departamentos_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Departamentos_1',
+            layerName: 'layer_Departamentos_1',
+            pane: 'pane_Departamentos_1',
+            onEachFeature: pop_Departamentos_1,
+            style: style_Departamentos_1_0,
+        });
+        bounds_group.addLayer(layer_Departamentos_1);
+        map.addLayer(layer_Departamentos_1);
+        function pop_CuencasHidrogrficas_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Nombre:</th>\
+                        <td>' + (feature.properties['nombre'] !== null ? autolinker.link(feature.properties['nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Red Hidrográfica:</th>\
+                        <td>' + (feature.properties['rios_lagos'] !== null ? autolinker.link(feature.properties['rios_lagos'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Límites:</th>\
+                        <td>' + (feature.properties['lim_cuenca'] !== null ? autolinker.link(feature.properties['lim_cuenca'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Curvas de Nivel:</th>\
+                        <td>' + (feature.properties['curvas'] !== null ? autolinker.link(feature.properties['curvas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CuencasHidrogrficas_2_0(feature) {
+            switch(String(feature.properties['q2wHide_nomb_uh_n1'])) {
+                case 'Región Hidrográfica del Pacífico':
+                    return {
+                pane: 'pane_CuencasHidrogrficas_2',
+                opacity: 1,
+                color: 'rgba(98,90,0,0.6)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,252,37,0.6)',
+                interactive: true,
+            }
+                    break;
+                case 'Región Hidrográfica del Amazonas':
+                    return {
+                pane: 'pane_CuencasHidrogrficas_2',
+                opacity: 1,
+                color: 'rgba(41,81,7,0.6)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(139,232,152,0.6)',
+                interactive: true,
+            }
+                    break;
+                case 'Región Hidrográfica del Titicaca':
+                    return {
+                pane: 'pane_CuencasHidrogrficas_2',
+                opacity: 1,
+                color: 'rgba(109,47,0,0.6)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,127,13,0.6)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_CuencasHidrogrficas_2');
+        map.getPane('pane_CuencasHidrogrficas_2').style.zIndex = 402;
+        map.getPane('pane_CuencasHidrogrficas_2').style['mix-blend-mode'] = 'normal';
+        var layer_CuencasHidrogrficas_2 = new L.geoJson(json_CuencasHidrogrficas_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CuencasHidrogrficas_2',
+            layerName: 'layer_CuencasHidrogrficas_2',
+            pane: 'pane_CuencasHidrogrficas_2',
+            onEachFeature: pop_CuencasHidrogrficas_2,
+            style: style_CuencasHidrogrficas_2_0,
+        });
+        bounds_group.addLayer(layer_CuencasHidrogrficas_2);
+        function pop_Hidromtricas_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Tipo:</th>\
+                        <td>' + (feature.properties['TIP_EST'] !== null ? autolinker.link(feature.properties['TIP_EST'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Subtipo:</th>\
+                        <td>' + (feature.properties['TIP_SUBEST'] !== null ? autolinker.link(feature.properties['TIP_SUBEST'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Estado:</th>\
+                        <td>' + (feature.properties['ESTADO'] !== null ? autolinker.link(feature.properties['ESTADO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Inicio:</th>\
+                        <td>' + (feature.properties['ANO_INICIO'] !== null ? autolinker.link(feature.properties['ANO_INICIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Final:</th>\
+                        <td>' + (feature.properties['ANO_FINAL'] !== null ? autolinker.link(feature.properties['ANO_FINAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nombre:</th>\
+                        <td>' + (feature.properties['Nombre'] !== null ? autolinker.link(feature.properties['Nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código:</th>\
+                        <td>' + (feature.properties['CODIGO'] !== null ? autolinker.link(feature.properties['CODIGO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Descargar:</th>\
+                        <td>' + (feature.properties['LINK'] !== null ? autolinker.link(feature.properties['LINK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Hidromtricas_3_0(feature) {
+            switch(String(feature.properties['TIP_EST'])) {
+                case 'HIDROMETRICA':
+                    return {
+                pane: 'pane_Hidromtricas_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(58,0,120,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,0,246,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Hidromtricas_3');
+        map.getPane('pane_Hidromtricas_3').style.zIndex = 403;
+        map.getPane('pane_Hidromtricas_3').style['mix-blend-mode'] = 'normal';
+        var layer_Hidromtricas_3 = new L.geoJson(json_Hidromtricas_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Hidromtricas_3',
+            layerName: 'layer_Hidromtricas_3',
+            pane: 'pane_Hidromtricas_3',
+            onEachFeature: pop_Hidromtricas_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Hidromtricas_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Hidromtricas_3);
+        map.addLayer(layer_Hidromtricas_3);
+        function pop_Climticas_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Tipo:</th>\
+                        <td>' + (feature.properties['TIP_EST'] !== null ? autolinker.link(feature.properties['TIP_EST'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Subtipo:</th>\
+                        <td>' + (feature.properties['TIP_SUBEST'] !== null ? autolinker.link(feature.properties['TIP_SUBEST'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Estado:</th>\
+                        <td>' + (feature.properties['ESTADO'] !== null ? autolinker.link(feature.properties['ESTADO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Inicio:</th>\
+                        <td>' + (feature.properties['ANO_INICIO'] !== null ? autolinker.link(feature.properties['ANO_INICIO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Final:</th>\
+                        <td>' + (feature.properties['ANO_FINAL'] !== null ? autolinker.link(feature.properties['ANO_FINAL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nombre:</th>\
+                        <td>' + (feature.properties['Nombre'] !== null ? autolinker.link(feature.properties['Nombre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Código:</th>\
+                        <td>' + (feature.properties['CODIGO'] !== null ? autolinker.link(feature.properties['CODIGO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Descargar:</th>\
+                        <td>' + (feature.properties['LINK'] !== null ? autolinker.link(feature.properties['LINK'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Climticas_4_0(feature) {
+            switch(String(feature.properties['TIP_EST'])) {
+                case 'CLIMATICA':
+                    return {
+                pane: 'pane_Climticas_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(1,73,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(21,255,252,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Climticas_4');
+        map.getPane('pane_Climticas_4').style.zIndex = 404;
+        map.getPane('pane_Climticas_4').style['mix-blend-mode'] = 'normal';
+        var layer_Climticas_4 = new L.geoJson(json_Climticas_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Climticas_4',
+            layerName: 'layer_Climticas_4',
+            pane: 'pane_Climticas_4',
+            onEachFeature: pop_Climticas_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Climticas_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Climticas_4);
+        map.addLayer(layer_Climticas_4);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Climáticas<br /><table><tr><td style="text-align: center;"><img src="legend/Climticas_4_CLIMATICA0.png" /></td><td>CLIMATICA</td></tr></table>': layer_Climticas_4,'Hidrométricas<br /><table><tr><td style="text-align: center;"><img src="legend/Hidromtricas_3_HIDROMETRICA0.png" /></td><td>HIDROMETRICA</td></tr></table>': layer_Hidromtricas_3,'Cuencas Hidrográficas<br /><table><tr><td style="text-align: center;"><img src="legend/CuencasHidrogrficas_2_RegiónHidrográficadelPacífico0.png" /></td><td>Región Hidrográfica del Pacífico</td></tr><tr><td style="text-align: center;"><img src="legend/CuencasHidrogrficas_2_RegiónHidrográficadelAmazonas1.png" /></td><td>Región Hidrográfica del Amazonas</td></tr><tr><td style="text-align: center;"><img src="legend/CuencasHidrogrficas_2_RegiónHidrográficadelTiticaca2.png" /></td><td>Región Hidrográfica del Titicaca</td></tr></table>': layer_CuencasHidrogrficas_2,'<img src="legend/Departamentos_1.png" /> Departamentos': layer_Departamentos_1,"Google Maps": layer_GoogleMaps_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
